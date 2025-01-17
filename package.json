@@ -2,7 +2,7 @@
   "name": "my-express-app",
   "version": "1.0.0",
   "description": "My Express app",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "start": "node src/app.js"
   },
