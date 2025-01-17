@@ -11,7 +11,17 @@ app.get("/brands/all", (req, res) => {
 });
 
 app.get("/parts/all", (req, res) => {
-  res.send("Todas las Marcas");
+  const parts = {
+    1: {
+      id: "1",
+      name: "Taco Motor",
+    },
+    2: {
+      id: "2",
+      name: "Bujía",
+    },
+  };
+  res.send(parts);
 });
 
 app.listen(port, () => {
