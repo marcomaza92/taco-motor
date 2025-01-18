@@ -62,7 +62,7 @@ Part.init(
 
 sequelize.sync();
 
-app.use("/swagger", swaggerUi.serve, swaggerUi.setup(specs));
+app.use("/api/swagger", swaggerUi.serve, swaggerUi.setup(specs));
 
 /**
  * @swagger
@@ -76,7 +76,7 @@ app.use("/swagger", swaggerUi.serve, swaggerUi.setup(specs));
  *       500:
  *         description: Error resetting tables
  */
-app.post("/reset-tables", async (req, res) => {
+app.post("/api/reset-tables", async (req, res) => {
   try {
     await sequelize.drop();
     await sequelize.sync();
@@ -234,18 +234,18 @@ app.post("/reset-tables", async (req, res) => {
  *
  */
 
-app.get("/parts/all", async (req, res) => {
+app.get("/api/parts/all", async (req, res) => {
   const parts = await Part.findAll();
   res.json(parts);
 });
 
-app.post("/parts/create", async (req, res) => {
+app.post("/api/parts/create", async (req, res) => {
   const newPart = await Part.create(req.body);
   const parts = await Part.findAll();
   res.json(parts);
 });
 
-app.get("/parts/:id", async (req, res) => {
+app.get("/api/parts/:id", async (req, res) => {
   const part = await Part.findByPk(req.params.id);
   if (part) {
     res.json(part);
@@ -254,7 +254,7 @@ app.get("/parts/:id", async (req, res) => {
   }
 });
 
-app.delete("/parts/:id", async (req, res) => {
+app.delete("/api/parts/:id", async (req, res) => {
   const result = await Part.destroy({ where: { id: req.params.id } });
   if (result) {
     res.status(204).send();
@@ -263,7 +263,7 @@ app.delete("/parts/:id", async (req, res) => {
   }
 });
 
-app.patch("/parts/:id", async (req, res) => {
+app.patch("/api/parts/:id", async (req, res) => {
   const [updated] = await Part.update(req.body, {
     where: { id: req.params.id },
   });
@@ -275,7 +275,7 @@ app.patch("/parts/:id", async (req, res) => {
   }
 });
 
-app.put("/parts/:id", async (req, res) => {
+app.put("/api/parts/:id", async (req, res) => {
   const [updated] = await Part.update(req.body, {
     where: { id: req.params.id },
   });
@@ -426,19 +426,19 @@ app.put("/parts/:id", async (req, res) => {
  *               $ref: '#/components/schemas/Brand'
  */
 
-app.get("/brands/all", async (req, res) => {
+app.get("/api/brands/all", async (req, res) => {
   const brands = await Brand.findAll();
   res.json(brands);
 });
 
-app.post("/brands/create", async (req, res) => {
+app.post("/api/brands/create", async (req, res) => {
   const newBrand = await Brand.create(req.body);
   console.log(newBrand, req.body);
   const brands = await Brand.findAll();
   res.json(brands);
 });
 
-app.get("/brands/:id", async (req, res) => {
+app.get("/api/brands/:id", async (req, res) => {
   const brand = await Brand.findByPk(req.params.id);
   if (brand) {
     res.json(brand);
@@ -447,7 +447,7 @@ app.get("/brands/:id", async (req, res) => {
   }
 });
 
-app.delete("/brands/:id", async (req, res) => {
+app.delete("/api/brands/:id", async (req, res) => {
   const result = await Brand.destroy({ where: { id: req.params.id } });
   if (result) {
     res.status(204).send();
@@ -456,7 +456,7 @@ app.delete("/brands/:id", async (req, res) => {
   }
 });
 
-app.patch("/brands/:id", async (req, res) => {
+app.patch("/api/brands/:id", async (req, res) => {
   const [updated] = await Brand.update(req.body, {
     where: { id: req.params.id },
   });
@@ -468,7 +468,7 @@ app.patch("/brands/:id", async (req, res) => {
   }
 });
 
-app.put("/brands/:id", async (req, res) => {
+app.put("/api/brands/:id", async (req, res) => {
   const [updated] = await Brand.update(req.body, {
     where: { id: req.params.id },
   });
@@ -480,7 +480,7 @@ app.put("/brands/:id", async (req, res) => {
   }
 });
 
-app.get("/", function (req, res) {
+app.get("/api", function (req, res) {
   res.send({ message: "Welcome to Taco Motor API!" });
 });
 
