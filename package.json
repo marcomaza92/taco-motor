@@ -4,9 +4,11 @@
   "description": "My Express app",
   "main": "index.js",
   "scripts": {
-    "start": "node api/index.js"
+    "dev": "node --watch api/index.js"
   },
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }
