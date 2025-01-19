@@ -162,9 +162,9 @@ app.post("/reset-tables", async (req, res) => {
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Part'
- * /parts/create:
+ * /parts/add:
  *   post:
- *     summary: Create a new car's part
+ *     summary: Add a new car's part
  *     tags: [Parts]
  *     requestBody:
  *       required: true
@@ -267,7 +267,7 @@ app.get("/parts/all", async (req, res) => {
   res.json(parts);
 });
 
-app.post("/parts/create", async (req, res) => {
+app.post("/parts/add", async (req, res) => {
   const { data: newPart, error } = await supabase
     .from("parts")
     .insert(req.body);
@@ -355,9 +355,9 @@ app.put("/parts/:id", async (req, res) => {
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Brand'
- * /brands/create:
+ * /brands/add:
  *   post:
- *     summary: Create a new car's brand
+ *     summary: Add a new car's brand
  *     tags: [Brands]
  *     requestBody:
  *       required: true
@@ -460,7 +460,7 @@ app.get("/brands/all", async (req, res) => {
   res.json(brands);
 });
 
-app.post("/brands/create", async (req, res) => {
+app.post("/brands/add", async (req, res) => {
   const { data: newBrand, error } = await supabase
     .from("brands")
     .insert(req.body);
