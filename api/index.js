@@ -3,6 +3,7 @@ const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const { createClient } = require("@supabase/supabase-js");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
 const port = 4000;
 
@@ -34,6 +35,14 @@ const options = {
 const specs = swaggerJsdoc(options);
 const CSS_URL =
   "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
+
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    optionsSuccessStatus: 204,
+  })
+);
 
 app.use(
   "/swagger",
