@@ -70,17 +70,81 @@ app.use(bodyParser.json());
  *         description: Error resetting tables
  */
 app.post("/reset-tables", async (req, res) => {
+  const brands = [{ name: "Volkswagen" }, { name: "Toyota" }];
+
   try {
-    await supabase.from("parts").delete().neq("id", 0);
     await supabase.from("brands").delete().neq("id", 0);
+    await supabase.rpc("reset_brands_sequence");
+
+    const { data: insertedBrands, error: brandError } = await supabase
+      .from("brands")
+      .insert(brands);
+    if (brandError) {
+      console.error("Error inserting brands:", brandError);
+      throw brandError;
+    }
+
+    const { data: resettedBrands } = await supabase.from("brands").select("*");
+
+    const parts = [
+      {
+        name: "Taco Motor",
+        description: "Taco Motor de aluminio (?",
+        brand_id: resettedBrands[0].id,
+      },
+      {
+        name: "Correa",
+        description: "Correa Premium",
+        brand_id: resettedBrands[0].id,
+      },
+    ];
+
+    await supabase.from("parts").delete().neq("id", 0);
+    await supabase.rpc("reset_parts_sequence");
+
+    const { data: insertedParts, error: partError } = await supabase
+      .from("parts")
+      .insert(parts);
+    if (partError) throw partError;
+
     res.status(200).send({ message: "Tables reset successfully" });
   } catch (error) {
-    res.status(500).send({ message: "Error resetting tables" });
+    console.error("Error resetting tables:", error);
+    res
+      .status(500)
+      .send({ message: "Error resetting tables", error: error.message });
   }
 });
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Part:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: The unique identifier for the part
+ *         brand_id:
+ *           type: integer
+ *           description: The ID of the brand associated with the part
+ *         name:
+ *           type: string
+ *           description: The name of the car part
+ *         description:
+ *           type: string
+ *           description: A description of the car part
+ *         created_at:
+ *           type: string
+ *           format: date-time
+ *           description: The date and time when the part was created
+ *         updated_at:
+ *           type: string
+ *           format: date-time
+ *           description: The date and time when the part was last updated
+ *       required:
+ *         - name
  * tags:
  *   name: Parts
  *   description: API to handle car's parts
@@ -195,36 +259,6 @@ app.post("/reset-tables", async (req, res) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Part'
- *
- * @swagger
- * components:
- *   schemas:
- *     Part:
- *       type: object
- *       properties:
- *         id:
- *           type: integer
- *           description: The unique identifier for the part
- *         brandId:
- *           type: integer
- *           description: The ID of the brand associated with the part
- *         name:
- *           type: string
- *           description: The name of the car part
- *         description:
- *           type: string
- *           description: A description of the car part
- *         createdAt:
- *           type: string
- *           format: date-time
- *           description: The date and time when the part was created
- *         updatedAt:
- *           type: string
- *           format: date-time
- *           description: The date and time when the part was last updated
- *       required:
- *         - name
- *
  */
 
 app.get("/parts/all", async (req, res) => {
@@ -294,11 +328,11 @@ app.put("/parts/:id", async (req, res) => {
  *         name:
  *           type: string
  *           description: The name of the car brand
- *         createdAt:
+ *         created_at:
  *           type: string
  *           format: date-time
  *           description: The date and time when the brand was created
- *         updatedAt:
+ *         updated_at:
  *           type: string
  *           format: date-time
  *           description: The date and time when the brand was last updated
