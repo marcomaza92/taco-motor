@@ -22,7 +22,7 @@ const options = {
     },
     servers: [
       {
-        url: "https://taco-motor.vercel.app/",
+        url: "https://taco-motor-api.vercel.app/",
       },
       {
         url: "http://localhost:4000",
