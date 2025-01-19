@@ -2,6 +2,9 @@
   "version": 2,
   "rewrites": [
     { "source": "/(.*)", "destination": "/api" },
-    { "source": "/node_modules/swagger-ui-dist/**", "destination": "/swagger" }
+    {
+      "source": "/node_modules/swagger-ui-dist/(.*)",
+      "destination": "/swagger"
+    }
   ]
 }
