@@ -33,24 +33,10 @@ const options = {
 
 const specs = swaggerJsdoc(options);
 
-app.use(
-  "/swagger",
-  swaggerUi.serve,
-  swaggerUi.setup(specs, {
-    swaggerOptions: {
-      urls: [
-        {
-          url: "/swagger.json",
-          name: "Taco Motor API Documentation",
-        },
-      ],
-      docExpansion: "none",
-    },
-  })
-);
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(specs));
 
-/* app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json()); */
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 /**
  * @swagger
