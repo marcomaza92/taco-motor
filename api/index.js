@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = 4000;
 
-// Initialize Supabase client
 const supabaseUrl = "https://ftulzetaaqowlzdegaxu.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dWx6ZXRhYXFvd2x6ZGVnYXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzcyMzE2NzEsImV4cCI6MjA1MjgwNzY3MX0.qj_BUxgLclGhm3zvZatTwqwOiWxJTrjODkzF3IYSkyw";
@@ -37,7 +36,15 @@ const specs = swaggerJsdoc(options);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use("/swagger", swaggerUi.serve, swaggerUi.setup(specs));
+app.use(
+  "/swagger",
+  swaggerUi.serve,
+  swaggerUi.setup(specs, {
+    swaggerOptions: {
+      docExpansion: "none",
+    },
+  })
+);
 
 /**
  * @swagger
